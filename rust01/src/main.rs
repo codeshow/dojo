@@ -1,59 +1,44 @@
 #![allow(dead_code)]
 
-#[derive(Debug, PartialEq)]
-enum Object {
+#[derive(Debug, PartialEq, Eq)]
+enum Player {
     Pedra,
     Papel,
     Tesoura
 }
 
-impl Object {
-    fn ganha_de(&self) -> Object {
-        match self {
-            Object::Pedra => Object::Tesoura,
-            Object::Tesoura => Object::Papel,
-            Object::Papel => Object::Pedra
-        }
+#[derive(Debug, PartialEq, Eq)]
+enum Resultado {
+    Ganhou(Player),
+    Empatou
+}
+
+fn jokenpo(p1: Player, p2: Player) -> Resultado {
+    match (p1, p2) {
+        (Player::Pedra, Player::Papel) | (Player::Papel, Player::Pedra) => Resultado::Ganhou(Player::Papel),
+        (Player::Pedra, Player::Tesoura) | (Player::Tesoura, Player::Pedra) => Resultado::Ganhou(Player::Pedra),
+        (Player::Tesoura, Player::Papel) | (Player::Papel, Player::Tesoura) => Resultado::Ganhou(Player::Tesoura),
+        (_, _) => Resultado::Empatou
     }
 }
 
-fn jokenpo<'a>(p1: &'a Object, p2: &'a Object) -> Option<&'a Object> {
-   if p1 == p2 {
-       None
-   } else if &p1.ganha_de() == p2 {
-       Some(&p1)
-   } else {
-       Some(&p2)
-   }
-}
-
 #[test]
-fn test_pedra_papel() {  
-
-    let pedra = Object::Pedra;
-    let papel = Object::Papel;
-    let tesoura = Object::Tesoura;
-
-    assert_eq!(jokenpo(&pedra, &papel), Some(&papel));
-    assert_eq!(jokenpo(&pedra, &tesoura), Some(&pedra));
-    assert_eq!(jokenpo(&pedra, &pedra), None);
-
-    assert_eq!(jokenpo(&pedra, &tesoura), Some(&pedra));
-    assert_eq!(jokenpo(&tesoura, &pedra), Some(&pedra));
+fn test_pedra_papel() {
+    assert_eq!(jokenpo(Player::Pedra, Player::Pedra), Resultado::Empatou);
 
 
-    assert_eq!(jokenpo(&pedra,  &pedra), None);
-    assert_eq!(jokenpo(&tesoura,  &tesoura), None);
-    assert_eq!(jokenpo(&papel,  &papel), None);
+    assert_eq!(jokenpo(Player::Pedra,  Player::Pedra), Resultado::Empatou);
+    assert_eq!(jokenpo(Player::Tesoura,  Player::Tesoura), Resultado::Empatou);
+    assert_eq!(jokenpo(Player::Papel,  Player::Papel), Resultado::Empatou);
 
-    assert_eq!(jokenpo(&pedra,  &papel), Some(&papel));
-    assert_eq!(jokenpo(&papel,  &pedra), Some(&papel));
+    assert_eq!(jokenpo(Player::Pedra,  Player::Papel), Resultado::Ganhou(Player::Papel));
+    assert_eq!(jokenpo(Player::Papel,  Player::Pedra), Resultado::Ganhou(Player::Papel));
 
-    assert_eq!(jokenpo(&pedra,  &tesoura), Some(&pedra));
-    assert_eq!(jokenpo(&tesoura,  &pedra), Some(&pedra));
+    assert_eq!(jokenpo(Player::Pedra,  Player::Tesoura), Resultado::Ganhou(Player::Pedra));
+    assert_eq!(jokenpo(Player::Tesoura,  Player::Pedra), Resultado::Ganhou(Player::Pedra));
 
-    assert_eq!(jokenpo(&tesoura, &papel), Some(&tesoura));
-    assert_eq!(jokenpo(&papel, &tesoura), Some(&tesoura));
+    assert_eq!(jokenpo(Player::Tesoura, Player::Papel), Resultado::Ganhou(Player::Tesoura));
+    assert_eq!(jokenpo(Player::Papel, Player::Tesoura), Resultado::Ganhou(Player::Tesoura));
 }
 
 
