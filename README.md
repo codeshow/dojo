@@ -22,7 +22,8 @@ Código:
 
 - Versão final usando Enum com Implementação -> https://github.com/codeshow/dojo/blob/versao_3/rust01/src/main.rs
 - Versão Anterior usando Enum com Match -> https://github.com/codeshow/dojo/blob/versao_2/rust01/src/main.rs
-- Versão Inicial usando strings e Match -> https://github.com/codeshow/dojo/blob/versao_1/rust01/src/main.rs
+- Versão Inicial usando &str e Match -> https://github.com/codeshow/dojo/blob/versao_1/rust01/src/main.rs
+- Versão beta usando if com String -> https://github.com/codeshow/dojo/blob/master/rust01/src/main.rs
 
 Coders:
 
